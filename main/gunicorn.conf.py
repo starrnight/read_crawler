@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Filename    : superset_gunicorn.conf.py.py
-# @Date        : 2021-10-28 16:54
-# @Description : 
-# @Author      : hexin
-# @Version     : V 0.1.0
-# @Remark      :
-
-# -*- coding: utf-8 -*-
 from multiprocessing import cpu_count
 
 # bind = ["0.0.0.0:8078"]
