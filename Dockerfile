@@ -2,21 +2,19 @@ FROM python:3.8
 
 MAINTAINER hexin
 
-ARG PROJECT_ENV
-ARG PROJECT_PORT
-ENV PROJECT_ENV ${PROJECT_ENV:-default}
-ENV PROJECT_PORT ${PROJECT_PORT:-8078}
+ENV PROJECT_ENV default
+ENV PROJECT_PORT 8078
+ENV PYTHON_MIRROR http://127.0.0.1:8081/repository/pypi-group/simple/
+ENV PYTHON_MIRROR_HOST 127.0.0.1
 
-ENV CODE_DIR /opt/projects/read_crawler
+WORKDIR /opt/projects/read_crawler
 
-WORKDIR $CODE_DIR
-
-COPY . $CODE_DIR
-
-ENV MIRROR_PARAM -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+COPY . .
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone  \
-    && pip3 install -r $CODE_DIR/requirements.txt --no-cache-dir $MIRROR_PARAM \
+    && pip config --global set global.index-url $PYTHON_MIRROR \
+    && pip config --global set install.trusted-host $PYTHON_MIRROR_HOST \
+    && pip install --no-cache-dir -r requirements.txt
 
 EXPOSE $PROJECT_PORT
 
